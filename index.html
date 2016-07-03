@@ -43,13 +43,30 @@
     <!-- SLIDES -->
     <slide class="" id="slide-1" style="background:;">
   <hgroup>
-    <h2>Read-And-Delete</h2>
+    <h2>Purpose of the calculator</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>This calculator is a small tool developed based on our research project of measuring the trigeminal neuron responses to CSD
+stimulation. In each experiment neuron ongoing activity rate of 3 periods are saved in a txt file. The periods baseline (B), 
+treatment (T), response (R) represent neuron&#39;s natual activity level, neuron&#39;s activity level after drug treatment, neuron&#39;s 
+activity level after cortical spreading depression stimulation respectively. Each period has a series of time bins (bin=5min).
+We use mean() function to measure B and T period neuron level, then compare R to T to check whether it is activated or not 
+basing on 95% confidence interval. Only 2 continuous bins higher than standard is considered as activation.</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>How to use the calculator</h2>
   </hgroup>
   <article data-timings="">
     <ol>
-<li>Edit YAML front matter</li>
-<li>Write using R Markdown</li>
-<li>Use an empty line followed by three dashes to separate slides!</li>
+<li>choose the experiment result txt file which wants to be calculated. </li>
+<li>set the &quot;Standard measure method&quot; that used to identify the activation bin.</li>
+<li>fill information about the drug administration.</li>
+<li>click the &quot;Calculate&quot; button to show the result.</li>
 </ol>
 
   </article>
@@ -58,10 +75,37 @@
 
 <slide class="class" id="id" style="background:;">
   <hgroup>
-    <h2>Slide 2</h2>
+    <h2>The code to identify activated time period</h2>
   </hgroup>
   <article data-timings="">
-    
+    <pre><code class="r">actiTrial &lt;- eventReactive(input$submit, {
+                        if(is.null(recordData)){return()}
+                        # actiTrial is the vector to record each bin either activated or not
+                        tmp &lt;- vector(mode = &quot;character&quot;, length = 0)
+                        a &lt;- append(stimulate(),0)
+                        a &lt;- append(a,0,after=0)
+                        for(i in 1:length(a)){
+                                if(a[i] &gt;standard() &amp;&amp; (a[i-1]&gt;standard() || a[i+1]&gt;standard())){
+                                        tmp[i] &lt;- &quot;Y&quot;
+                                }else{
+                                        tmp[i] &lt;- &quot;N&quot;
+                                }
+                        }
+                        return(tmp[-c(1,length(tmp))])
+                })
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>An example of the output plot</h2>
+  </hgroup>
+  <article data-timings="">
+    <p><img src="assets/fig/unnamed-chunk-2-1.png" alt="plot of chunk unnamed-chunk-2"></p>
+
   </article>
   <!-- Presenter Notes -->
 </slide>
@@ -72,14 +116,26 @@
     <ul>
       <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=1 title='Read-And-Delete'>
+        data-slide=1 title='Purpose of the calculator'>
          1
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=2 title='Slide 2'>
+        data-slide=2 title='How to use the calculator'>
          2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='The code to identify activated time period'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='An example of the output plot'>
+         4
       </a>
     </li>
   </ul>

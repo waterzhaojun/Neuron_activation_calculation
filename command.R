@@ -59,3 +59,38 @@ b[-c(1,length(b))]
 library(slidify)
 
 author("neuron_activation_calculator")
+
+library(ggplot2)
+
+expData <- readLines(con="https://raw.githubusercontent.com/waterzhaojun/Neuron_activation_calculation/master/example.txt")
+
+treat <- as.numeric(strsplit(expData[6], ",")[[1]])
+if(length(treat)>9){
+        treat <- treat[c(length(treat)-8):length(treat)]
+}
+
+stimulate <- as.numeric(strsplit(expData[8], ",")[[1]])
+
+standard <- t.test(treat)$conf.int[2]
+
+tmp <- vector(mode = "character", length = 0)
+a <- append(stimulate,0)
+a <- append(a,0,after=0)
+for(i in 1:length(a)){
+        if(a[i] >standard && (a[i-1]>standard || a[i+1]>standard)){
+                tmp[i] <- "Y"
+        }else{
+                tmp[i] <- "N"
+        }
+}
+tmp <- tmp[-c(1,length(tmp))]
+
+df <- data.frame("tp"=c(paste("T", 1:length(treat), sep = ""), paste("R", 1:length(stimulate), sep = "")), "rate" = c(treat, stimulate))
+df$tp <- factor(df$tp, levels = df$tp)
+ggplot(data=df, aes(x=tp, y=rate)) + 
+        geom_bar(stat = "identity") +
+        geom_bar(stat = "identity", data = df[1:length(treat),], aes(x=tp, y=rate), fill="gray60") +
+        geom_bar(stat = "identity", data = df[length(treat)+which(tmp=="Y"),], aes(x=tp, y=rate), fill="rosybrown") +
+        labs(x="time point (T = treatment, R = response, bin=5 min)", y="neuron ongoing activity rate (Hz)") +
+        ggtitle("Neuron ongoing activity changes by physiological stimulation") +
+        theme(plot.title = element_text(face="bold", size=24))
