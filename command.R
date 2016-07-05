@@ -1,4 +1,11 @@
-setwd("data-science-class/C9W4A_Neuron_activation_calculation/")
+setwd("data-science-class/C9W4A_Neuron_activation_calculation/Neuron_activation_calculation/testDeck")
+
+publish(user = "waterzhaojun", repo = "waterzhaojun/waterzhaojun.github.io")
+
+publish(title="testDeckr", "index.html", host = "rpubs")
+?publish
+
+library(slidify)
 
 x <- readLines("example.txt")
 xa <- as.numeric(strsplit(x[2], ",")[[1]])
@@ -94,3 +101,5 @@ ggplot(data=df, aes(x=tp, y=rate)) +
         labs(x="time point (T = treatment, R = response, bin=5 min)", y="neuron ongoing activity rate (Hz)") +
         ggtitle("Neuron ongoing activity changes by physiological stimulation") +
         theme(plot.title = element_text(face="bold", size=24))
+
+author('testDeck')

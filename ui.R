@@ -18,9 +18,9 @@ shinyUI(fluidPage(
                        tags$a(href="http://jn.physiology.org/content/113/7/2778.abstract", "here."),
                        tags$br(),
                        tags$br(),
-                       "An txt file example can be download at ", 
+                       "A txt file example can be download at ", 
                        tags$a(href="https://raw.githubusercontent.com/waterzhaojun/Neuron_activation_calculation/master/example.txt", "here."),
-                        "You will need to upload the txt file then click \"submit\" to get the result. Drug's name, concentration and administration method are not necessary
+                        "You need to upload the txt file then click \"Calculate\" to get the result. Drug's name, concentration and administration method are not necessary
                        but recommended. The standard for measuring neuron activation is default to confidence interval with two times and one time 
                        standard deviation as options."
                         
